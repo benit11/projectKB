@@ -312,7 +312,7 @@ while not close_window:
             turn += 1
             turn = turn % 2
     
-    if count_zeros(board) == 0:
+    if count_zeros(board) == 0 and not game_over:
         game_over = True
         winner = 3
         
