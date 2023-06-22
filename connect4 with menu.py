@@ -374,6 +374,7 @@ def main_game():
                 if button_x <= mouse_pos[0] <= button_x + button_width and button_y+150 <= mouse_pos[1] <= button_y+150 + button_height:
                     print("quit")
                     running = False
+                    sys.exit()
                 
             pygame.display.flip()
 
