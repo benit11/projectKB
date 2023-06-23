@@ -248,12 +248,12 @@ font = pygame.font.Font(None, font_size)
 #FUNCTION UNTUK DRAW BUTTON 
 def draw_button():
     pygame.draw.rect(screen, button_color, (button_x, button_y, button_width, button_height))
-    text_surface = font.render("PLAY", True, (255, 255, 255))  # Warna teks putih
+    text_surface = font.render("Player 1st", True, (255, 255, 255))  # Warna teks putih
     text_rect = text_surface.get_rect(center=(button_x + button_width / 2, button_y + button_height / 2))
     screen.blit(text_surface, text_rect)
 
     pygame.draw.rect(screen, button_color, (button_x, button_y+150, button_width, button_height))
-    text_surface = font.render("QUIT", True, (255, 255, 255))  # Warna teks putih
+    text_surface = font.render("AI 1st", True, (255, 255, 255))  # Warna teks putih
     text_rect = text_surface.get_rect(center=(button_x + button_width / 2, (button_y+150) + button_height / 2))
     screen.blit(text_surface, text_rect)
 
@@ -278,7 +278,7 @@ size = (width, height)
 RADIUS = int(SQUARESIZE/2 - 5)
 screen = pygame.display.set_mode(size)
 
-def game():
+def game(input):
     screen.fill("black")
     #VARIABEL GAME
     board = create_board()
@@ -287,7 +287,8 @@ def game():
     draw_board(board)
     pygame.display.update()
     myfont = pygame.font.SysFont("monospace", 75)
-    turn = random.randint(PLAYER, AI)
+    # turn = random.randint(PLAYER, AI)
+    turn = input
     winner = None
     close_window= False
     while not close_window:
@@ -325,8 +326,8 @@ def game():
                         draw_board(board)
                         
         if turn == AI and not game_over:
-            col, minimax_score = minimax(board, 5, True)
-            # col, minimax_score = alpha_beta(board, 5, -math.inf, math.inf, True)
+            # col, minimax_score = minimax(board, 5, True)
+            col, minimax_score = alpha_beta(board, 5, -math.inf, math.inf, True)
             
             if is_valid_location(board, col):
                 row = get_next_open_row(board, col)
@@ -358,26 +359,22 @@ def game():
                 screen.blit(label, (40,10))
 		
 # MAIN CODE BUAT RUNNING GAME	
-def main_game():	
-    running = True
-    while running:
-        show_main_menu_text()
-        draw_button()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if button_x <= mouse_pos[0] <= button_x + button_width and button_y <= mouse_pos[1] <= button_y + button_height:
-                    print("play")
-                    game()
-                if button_x <= mouse_pos[0] <= button_x + button_width and button_y+150 <= mouse_pos[1] <= button_y+150 + button_height:
-                    print("quit")
-                    running = False
-                    sys.exit()
-                
-            pygame.display.flip()
 
 running = True
 while running:
-	main_game()
+    show_main_menu_text()
+    draw_button()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            if button_x <= mouse_pos[0] <= button_x + button_width and button_y <= mouse_pos[1] <= button_y + button_height:
+                print("Player's Turn")
+                game(int(0))
+            if button_x <= mouse_pos[0] <= button_x + button_width and button_y+150 <= mouse_pos[1] <= button_y+150 + button_height:
+                print("AI's Turn")
+                game(int(1))
+            
+        pygame.display.flip()
+
